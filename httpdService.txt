@@ -1,0 +1,24 @@
+#!/bin/bash
+
+httpd_aktifmi(){
+        if systemctl is-active --quiet httpd;then
+                echo "httpd çalışıyor"
+                echo "$(date '+%F %T') - httpd çalışıyor" >> /var/log/httpd-monitor.log
+                return 0
+
+        else
+                echo "httpd çalışmıyor"
+                echo "$(date '+%F %T') - httpd kapalı" >> /var/log/httpd-monitor.log
+                systemctl start httpd
+                if systemctl is-active --quiet httpd; then
+                        echo "httpd başarıyla başlatıldı"
+                        echo "$(date '+%F %T') - httpd başarıyla başlatıldı" >> /var/log/httpd-monitor.log
+                        return 0
+                else
+                        echo "httpd BAŞLATILAMADI!"
+                        echo "$(date '+%F %T') - httpd başlatılamadı!" >> /var/log/httpd-monitor.log
+                        return 1
+                fi
+        fi
+}
+                                                                                                                                                                                                                  httpd_aktifmi                                                                                                                                                                                                                      
